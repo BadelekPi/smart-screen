@@ -5,7 +5,12 @@
 #define MAXTIMINGS	85
 #define DHTPIN		7
 int dht11_dat[5] = { 0, 0, 0, 0, 0 };
- 
+struct receiveData {
+	int humidity_high, humidity_low, temperature_high, temperature_low;
+};
+
+struct receiveData S;
+
 void read_dht11_dat()
 {
 	uint8_t laststate	= HIGH;
@@ -28,7 +33,7 @@ void read_dht11_dat()
 		while ( digitalRead( DHTPIN ) == laststate )
 		{
 			counter++;
-			delayMicroseconds( 1 );
+			delayMicroseconds( 1.5 );
 			if ( counter == 255 )
 			{
 				break;
@@ -52,10 +57,16 @@ void read_dht11_dat()
 	     (dht11_dat[4] == ( (dht11_dat[0] + dht11_dat[1] + dht11_dat[2] + dht11_dat[3]) & 0xFF) ) )
 	{
 		f = dht11_dat[2] * 9. / 5. + 32;
-		printf( "Humidity = %d.%d %% Temperature = %d.%d C (%.1f F)\n",
-			dht11_dat[0], dht11_dat[1], dht11_dat[2], dht11_dat[3], f );
-	}else  {
-		printf( "Data not good, skip\n" );
+		
+		if ( dht11_dat[4] != 0 )
+			S.humidity_high = dht11_dat[0];
+			S.humidity_low = dht11_dat[1];
+			S.temperature_high = dht11_dat[2];
+			S.temperature_low = dht11_dat[3];
+
+			printf( "Humidity = %d.%d %% Temperature = %d.%d C (%.1f F)\n",
+			S.humidity_high, S.humidity_low, S.temperature_high, S.temperature_low, f );
+
 	}
 }
  
