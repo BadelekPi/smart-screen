@@ -5,21 +5,20 @@
 #define MAXTIMINGS	85
 #define DHTPIN		7
 int dht11_dat[5] = { 0, 0, 0, 0, 0 };
+float	f; 
 struct receiveData {
 	int humidity_high, humidity_low, temperature_high, temperature_low;
 };
 
-struct receiveData S;
-
-void read_dht11_dat()
-{
+struct receiveData read_dht11_dat()
+{	
+	struct receiveData S;
 	uint8_t laststate	= HIGH;
 	uint8_t counter		= 0;
 	uint8_t j		= 0, i;
-	float	f; 
- 
+	// float	f; 
 	dht11_dat[0] = dht11_dat[1] = dht11_dat[2] = dht11_dat[3] = dht11_dat[4] = 0;
- 
+
 	pinMode( DHTPIN, OUTPUT );
 	digitalWrite( DHTPIN, LOW );
 	delay( 18 );
@@ -63,23 +62,25 @@ void read_dht11_dat()
 			S.humidity_low = dht11_dat[1];
 			S.temperature_high = dht11_dat[2];
 			S.temperature_low = dht11_dat[3];
-
-			printf( "Humidity = %d.%d %% Temperature = %d.%d C (%.1f F)\n",
-			S.humidity_high, S.humidity_low, S.temperature_high, S.temperature_low, f );
-
+			// printf( "Humidity = %d.%d %% Temperature = %d.%d C (%.1f F)\n",
+			// S.humidity_high, S.humidity_low, S.temperature_high, S.temperature_low, f );
+			return S;
 	}
 }
  
 int main( void )
-{
+{	
+	struct receiveData R;
 	printf( "Raspberry Pi wiringPi DHT11 Temperature test program\n" );
- 
 	if ( wiringPiSetup() == -1 )
 		exit( 1 );
  
 	while ( 1 )
 	{
-		read_dht11_dat();
+		R = read_dht11_dat();
+		f = dht11_dat[2] * 9. / 5. + 32;
+		printf( "Humidity = %d.%d %% Temperature = %d.%d C (%.1f F)\n",
+			R.humidity_high, R.humidity_low, R.temperature_high, R.temperature_low, f );
 		delay( 1000 ); 
 	}
  
