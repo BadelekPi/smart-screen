@@ -4,6 +4,7 @@
 #include <stdint.h>
 #define MAXTIMINGS	85
 #define DHTPIN		7
+
 int dht11_dat[5] = { 0, 0, 0, 0, 0 };
 float	f; 
 struct receiveData {
@@ -16,7 +17,6 @@ struct receiveData read_dht11_dat()
 	uint8_t laststate	= HIGH;
 	uint8_t counter		= 0;
 	uint8_t j		= 0, i;
-	// float	f; 
 	dht11_dat[0] = dht11_dat[1] = dht11_dat[2] = dht11_dat[3] = dht11_dat[4] = 0;
 
 	pinMode( DHTPIN, OUTPUT );
@@ -55,15 +55,11 @@ struct receiveData read_dht11_dat()
 	if ( (j >= 40) &&
 	     (dht11_dat[4] == ( (dht11_dat[0] + dht11_dat[1] + dht11_dat[2] + dht11_dat[3]) & 0xFF) ) )
 	{
-		f = dht11_dat[2] * 9. / 5. + 32;
-		
 		if ( dht11_dat[4] != 0 )
 			S.humidity_high = dht11_dat[0];
 			S.humidity_low = dht11_dat[1];
 			S.temperature_high = dht11_dat[2];
 			S.temperature_low = dht11_dat[3];
-			// printf( "Humidity = %d.%d %% Temperature = %d.%d C (%.1f F)\n",
-			// S.humidity_high, S.humidity_low, S.temperature_high, S.temperature_low, f );
 			return S;
 	}
 }
@@ -78,9 +74,13 @@ int main( void )
 	while ( 1 )
 	{
 		R = read_dht11_dat();
-		f = dht11_dat[2] * 9. / 5. + 32;
-		printf( "Humidity = %d.%d %% Temperature = %d.%d C (%.1f F)\n",
-			R.humidity_high, R.humidity_low, R.temperature_high, R.temperature_low, f );
+		if (R.humidity_high > 0 && R.humidity_high < 100 &&
+			R.temperature_high > 0 && R.temperature_high < 100)
+			{
+				printf( "Humidity = %d.%d %% Temperature = %d.%d C\n",
+				R.humidity_high, R.humidity_low, R.temperature_high, R.temperature_low);
+			}
+		
 		delay( 1000 ); 
 	}
  
