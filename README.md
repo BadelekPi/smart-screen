@@ -6,3 +6,8 @@ Check data definition:
 
 The received 40 bits of data are：
 Humidity_High + Humidity_Low + Temperature_High + Temperature_Low = Check_Sum
+
+## InfluxDB
+Time series database client will be use to capture data from sensors and allows to visualize them easily.
+There is no official InfluxDB C language client library. But here is some solution from IBM: https://github.com/nigelargriffiths/InfluxDB-C-client
+
