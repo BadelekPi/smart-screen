@@ -9,12 +9,12 @@ Humidity_High + Humidity_Low + Temperature_High + Temperature_Low = Check_Sum\
 
 
 ## ESP32
-Flash MicroPython Firmware with esptool.py or uPyCraft (problem with zlib in my case)\
-Flash memory: `python3 -m esptool --chip esp32 erase_flash`\
-Flashing MicroPython Firmware: `python3 -m esptool --chip esp32 --port <serial_port> write_flash -z 0x1000 <esp32-X.bin>`\
+Flash MicroPython Firmware with esptool.py or uPyCraft (problem with zlib in my case)<br/>
+Flash memory: `python3 -m esptool --chip esp32 erase_flash`<br/>
+Flashing MicroPython Firmware: `python3 -m esptool --chip esp32 --port <serial_port> write_flash -z 0x1000 <esp32-X.bin>`<br/>
 
 ## InfluxDB
-Time series database client will be use to capture data from sensors and allows to visualize them easily.\
+Time series database client will be use to capture data from sensors and allows to visualize them easily.
 There is no official InfluxDB C language client library. But here is some solution from IBM: https://github.com/nigelargriffiths/InfluxDB-C-client\
 
 
